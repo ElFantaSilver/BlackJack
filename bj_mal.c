@@ -23,38 +23,6 @@ int numCartasJugador = 0;
 int sumaJugador = 0;
 char eleccion;
 
-void inicializarMazo() {
-    for (int i = 0; i < TOTAL_CARTAS; i++) {
-        mazo[i].valor = valores[i % VALORES_CARTAS];
-        mazo[i].palo = palos[i / VALORES_CARTAS];
-        mazo[i].valorNumerico = (i % VALORES_CARTAS) + 1;
-        if (mazo[i].valorNumerico > 10) mazo[i].valorNumerico = 10;
-        if (i % VALORES_CARTAS == VALORES_CARTAS - 1) mazo[i].valorNumerico = 11;
-    }
-}
-
-void barajarMazo() {
-    srand(time(NULL));
-    for (int i = 0; i < TOTAL_CARTAS; i++) {
-        int j = rand() % TOTAL_CARTAS;
-        struct carta temp = mazo[i];
-        mazo[i] = mazo[j];
-        mazo[j] = temp;
-    }
-}
-
-void mostrarCarta(struct carta c) {
-    if (c.valor=='A')
-    {
-       printf("Quieres que la A cuente 1 o 11?")
-       
-    }
-    else{
-         printf("  %s de %s\n", c.valor, c.palo);
-    }
-    
-}
-
 int sumarMano(struct carta mano[], int numCartas) {
     int suma = 0;
     for (int i = 0; i < numCartas; i++) {
@@ -67,6 +35,21 @@ int main() {
     inicializarMazo();
     barajarMazo();
 
+    for (int i = 0; i < TOTAL_CARTAS; i++) {
+        mazo[i].valor = valores[i % VALORES_CARTAS];
+        mazo[i].palo = palos[i / VALORES_CARTAS];
+        mazo[i].valorNumerico = (i % VALORES_CARTAS) + 1;
+        if (mazo[i].valorNumerico > 10) mazo[i].valorNumerico = 10;
+        if (i % VALORES_CARTAS == VALORES_CARTAS - 1) mazo[i].valorNumerico = 11;
+    }
+    srand(time(NULL));
+    for (int i = 0; i < TOTAL_CARTAS; i++) {
+        int j = rand() % TOTAL_CARTAS;
+        struct carta temp = mazo[i];
+        mazo[i] = mazo[j];
+        mazo[j] = temp;
+    }
+
     printf("Bienvenido al Blackjack!\n");
 
     manoJugador[numCartasJugador++] = mazo[0];
@@ -74,8 +57,8 @@ int main() {
     sumaJugador = sumarMano(manoJugador, numCartasJugador);
 
     printf("Tus cartas:\n");
-    mostrarCarta(manoJugador[0]);
-    mostrarCarta(manoJugador[1]);
+    printf("  %s de %s\n", manoJugador[0]);
+    printf("  %s de %s\n", manoJugador[1]);
     printf("Suma total: %d\n", sumaJugador);
 
     while (sumaJugador < 21) {
@@ -87,7 +70,7 @@ int main() {
             sumaJugador = sumarMano(manoJugador, ++numCartasJugador);
 
             printf("Nueva carta:\n");
-            mostrarCarta(manoJugador[numCartasJugador - 1]);
+            printf("  %s de %s\n", manoJugador[numCartasJugador - 1]);
             printf("Suma total: %d\n", sumaJugador);
         } else {
             break;
